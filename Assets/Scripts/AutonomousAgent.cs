@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.InputSystem.Utilities;
 
 public class AutonomousAgent : AIAgent
 {
@@ -9,13 +10,14 @@ public class AutonomousAgent : AIAgent
     public Perception seekPerception;
     public Perception fleePerception;
     public Perception flockPerception;
+    public Perception obstaclePerception;
 
     float angle;
 
     private void Update()
     {
         //movement.ApplyForce(Vector3.forward * 10);
-        transform.position = Utilities.Wrap(transform.position, new Vector3(-5, -5, -5), new Vector3(5, 5, 5));
+        transform.position = Utilities.Wrap(transform.position, new Vector3(-15, -15, -15), new Vector3(15, 15, 15));
 
         Debug.DrawRay(transform.position, transform.forward * seekPerception.maxDistance, Color.cyan);
 
@@ -48,8 +50,20 @@ public class AutonomousAgent : AIAgent
             if (gameObjects.Length > 0)
             {
                 movement.ApplyForce(Cohesion(gameObjects) * data.cohesionWeight);
-                //movement.ApplyForce(Seperation(gameObjects, data.seperationRadius) * data.seperationWeight);
+                movement.ApplyForce(Seperation(gameObjects, data.seperationRadius) * data.seperationWeight);
                 movement.ApplyForce(Alignment(gameObjects) * data.alignmentWeight);
+            }
+        }
+
+        //OBSTACLE
+        if (obstaclePerception != null && obstaclePerception.CheckDirection(Vector3.forward))
+        {
+            Vector3 direction = Vector3.zero;
+
+            if (obstaclePerception.GetOpenDirection(ref direction))
+            {
+                Debug.DrawRay(transform.position, direction * 5, Color.red, 0.2f);
+                movement.ApplyForce(GetSteeringForce(direction) * data.obstacleWeight);
             }
         }
 
@@ -61,7 +75,7 @@ public class AutonomousAgent : AIAgent
         }
 
         Vector3 acceleration = movement.Accerlation;
-        acceleration.y = 0;
+        //acceleration.y = 0;
         movement.Accerlation = acceleration;
 
         if (movement.Direction.sqrMagnitude != 0)
@@ -91,14 +105,40 @@ public class AutonomousAgent : AIAgent
         return force;
     }
 
-    private Vector3 Seperation(GameObject[] neighbors)
+    private Vector3 Seperation(GameObject[] neighbors, float radius)
     {
-        return Vector3.zero;
+        Vector3 separation = Vector3.zero;
+        Vector3 direction;
+        float distance;
+
+        foreach (var neighbor in neighbors)
+        {
+            direction = transform.position - neighbor.transform.position;
+            distance = Utilities.Magnitude(direction); 
+            if (distance < radius)
+            {
+                separation += direction / (distance * distance);
+            }
+        }
+
+        Vector3 force = GetSteeringForce(separation);
+
+        return force;
     }
 
     private Vector3 Alignment(GameObject[] neighbors)
     {
-        return Vector3.zero;
+        Vector3 velocities = Vector3.zero;
+
+        foreach (var neighbor in neighbors)
+        {
+            velocities += neighbor.GetComponent<AutonomousAgent>().movement.Velocity;
+        }
+
+        Vector3 averageVelocity = velocities / neighbors.Length;
+        Vector3 force = GetSteeringForce(averageVelocity);
+
+        return force;
     }
 
     private Vector3 Seek(GameObject go)

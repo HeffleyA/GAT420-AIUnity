@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1561204ddf8c2fc46a3af05b4fc9819a, type: 3}
-  m_Name: Agent01AutoData
+  m_Script: {fileID: 11500000, guid: 23d7453e191ea6a4b98d635b782f95d7, type: 3}
+  m_Name: NavAgentData
   m_EditorClassIdentifier: 
-  displacement: 80
-  distance: 5.93
-  radius: 7.51
-  cohesionWeight: 1.1
-  seperationWeight: 1.82
-  seperationRadius: 1.09
-  alignmentWeight: 2.87
-  obstacleWeight: 15
+  maxSpeed: 5
+  minSpeed: 5
+  maxForce: 5

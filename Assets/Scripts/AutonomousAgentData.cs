@@ -11,4 +11,5 @@ public class AutonomousAgentData : ScriptableObject
     [Range(0, 5)] public float seperationWeight;
     [Range(0, 5)] public float seperationRadius;
     [Range(0, 5)] public float alignmentWeight;
+    [Range(0, 20)] public float obstacleWeight;
 }

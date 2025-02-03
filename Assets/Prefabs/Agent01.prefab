@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3709836980233781837}
   - component: {fileID: 4928629790532401977}
   - component: {fileID: 65003824535493017}
+  - component: {fileID: -936070154365400732}
   - component: {fileID: 2073545642000859706}
   - component: {fileID: 1902915488027302311}
   - component: {fileID: 1257565141624466289}
@@ -54,8 +55,9 @@ MonoBehaviour:
   movement: {fileID: 2073545642000859706}
   data: {fileID: 11400000, guid: 2469864f6b0088c409aa546a427c1e3a, type: 2}
   seekPerception: {fileID: 4928629790532401977}
-  fleePerception: {fileID: -3692442782629343843, guid: a36bfb2c8e0dd4a40832924686f1e1d3, type: 3}
+  fleePerception: {fileID: 0}
   flockPerception: {fileID: 65003824535493017}
+  obstaclePerception: {fileID: -936070154365400732}
 --- !u!114 &4928629790532401977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,9 +70,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd80c370ff8720d4f8ffb00053489cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  description: Seek
   tagName: Agent02
   maxDistance: 5
   maxAngle: 180
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &65003824535493017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,9 +89,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd80c370ff8720d4f8ffb00053489cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  description: Flock
   tagName: Agent01
   maxDistance: 5
   maxAngle: 180
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &-936070154365400732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8447883053910873412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff657b9582a16e943a2bcfb80862fa24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: Obstacle
+  tagName: 
+  maxDistance: 6
+  maxAngle: 120
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  numRaycast: 8
 --- !u!114 &2073545642000859706
 MonoBehaviour:
   m_ObjectHideFlags: 0

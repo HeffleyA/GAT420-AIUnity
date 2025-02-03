@@ -15,3 +15,7 @@ MonoBehaviour:
   displacement: 10
   distance: 3
   radius: 2
+  cohesionWeight: 5
+  seperationWeight: 0
+  seperationRadius: 0
+  alignmentWeight: 0
